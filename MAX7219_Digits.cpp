@@ -92,7 +92,7 @@ void MAX7219_Digit::Clear() {
 void MAX7219_Digit::Brightness(int ii) {
 
   // Range check the brightness value
-  if (ii > 0 && ii < 16) {
+  if (ii > -1 && ii < 16) {
     MAX7219_Write(MAX7219_Intensity, ii);
   } // end of range check
 } // end of function
@@ -103,7 +103,10 @@ void MAX7219_Digit::Brightness(int ii) {
   Write a text message to the display, either line 1 or 2. Options = Line number, Char1 (left), Char2, Char3, Char4 (right),
 */
 /***************************************************************************************************************************/
-void MAX7219_Digit::Display_Text(int Display_Num, int Char_1, int Char_2, int Char_3, int Char_4) {
+void MAX7219_Digit::Display_Text(int Display_Num, int Char_1, int Char_2, int Char_3, int Char_4, int dec_p) {
+
+  // make an array of the display data
+  int Disp_Val[] = {Char_1, Char_2, Char_3, Char_4};
 
   // Find the first digit register
   int Start_Digit = 1;
@@ -111,11 +114,18 @@ void MAX7219_Digit::Display_Text(int Display_Num, int Char_1, int Char_2, int Ch
     Start_Digit = 5;
   } // end of first digit search
 
-  // Display message
-  MAX7219_Write(Start_Digit, pgm_read_byte(&Char_Set[Char_1])); Start_Digit++;
-  MAX7219_Write(Start_Digit, pgm_read_byte(&Char_Set[Char_2])); Start_Digit++;
-  MAX7219_Write(Start_Digit, pgm_read_byte(&Char_Set[Char_3])); Start_Digit++;
-  MAX7219_Write(Start_Digit, pgm_read_byte(&Char_Set[Char_4])); Start_Digit++;
+  for (int tt = 0; tt < 4; tt++) {
+    int a = pgm_read_byte(&Char_Set[Disp_Val[tt]]);
+
+    // test for decimal point
+    if (bitRead(dec_p, tt) > 0) {
+      a = a + 128;
+    }
+
+    // write the display data and incrument ready for the next
+    MAX7219_Write(Start_Digit, a); Start_Digit++;
+
+  } // end
 
 } //end of function
 
@@ -224,6 +234,62 @@ void MAX7219_Digit::Display_Value(int Display_Num, double Display_Value, int Dis
     } // end of no suffix required
 
   } // Finished writting the message
+
+} // end of function
+
+
+/***************************************************************************************************************************/
+/*
+  Write a clock with or without colon
+*/
+/***************************************************************************************************************************/
+void MAX7219_Digit::Clock_Display(int Display_Num, String value, int colon, int colon_id) {
+
+  // blank colon if not required (flashing)
+  if (bitRead(colon, 0) == 0) {
+    colon_id = 0;
+  }
+
+  // pad the string if before 10:00am
+  if (value.length() == 3) {
+    value = "*" + value;
+  }
+
+  // test if message length ok
+  if (value.length() == 4) {
+
+    // Find the first digit register
+    int Start_Digit = 1;
+    if (Display_Num != 1) {
+      Start_Digit = 5;
+    } // end of first digit search
+
+    // make an array of the clock value message
+    char value_array[4];
+    value.toCharArray(value_array, (value.length() + 1));
+
+    for (int zz = 0; zz < 4; zz++) {
+
+      int a = (value_array[zz] - 0x30);
+
+      // if first digit not valid (i.e. time before 10:00am) blank the digit
+      if (a > -1) {
+        a = pgm_read_byte(&Char_Set[a]);
+      }
+      else {
+        a = 0;
+      }
+
+      // add the decimal point or colon
+      if (bitRead(colon_id, zz) > 0) {
+        a = a + 128;
+      }
+
+      MAX7219_Write(Start_Digit, a); Start_Digit++;
+
+    } // end of display update
+
+  } // end of range check
 
 } // end of function
 

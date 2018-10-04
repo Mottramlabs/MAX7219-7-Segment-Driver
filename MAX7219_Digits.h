@@ -49,8 +49,10 @@ class MAX7219_Digit
     void MAX7219_Write(uint8_t Address, uint8_t Data);
     void Clear();
     void Brightness(int ii);
-    void Display_Text(int Display_Num, int Char_1, int Char_2, int Char_3, int Char_4);
+    void Display_Text(int Display_Num, int Char_1, int Char_2, int Char_3, int Char_4, int dec_p);
     void Display_Value(int Display_Num, double Display_Value, int Display_DecP, int Suffix);
+    void Clock_Display(int Display_Num, String value, int colon, int colon_id);
+
 
   private:
     int _Pin; // Private version of the CS Pin

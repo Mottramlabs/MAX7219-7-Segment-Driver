@@ -1,5 +1,6 @@
 Simple driver library for a MAX7219 mounted on an LED display board
-July 2018 - David Mottram
+September 2018 - David Mottram
+Added clock display function and better decimal point control
 
 Uses a single MAX7219 display driver chip
 -----------------------------------------
@@ -15,13 +16,14 @@ Uses a single MAX7219 display driver chip
 Functions 
 ---------
 
-	MAX7219_Digit(CS Pin);												Constructor
-	Begin()																Set up the MAX7219 control registers
-	MAX7219_Write(Address, Data)										Write a data byte to the MAX7219
-	Clear()																Clear dislplay
-	Brightness(Brightness)												Range 0-15
-	Display_Text(Display_Num, Char_1, Char_2, Char_3, Char_4)			Select top or bottom display and display the numbers for digits 1-4
-	Display_Value(Display_Num, Display_Value, Display_DecP, Suffix)		Select top or bottom display and a value with D.p. and suffix character
+	MAX7219_Digit(CS Pin);															Constructor
+	Begin()																			Set up the MAX7219 control registers
+	MAX7219_Write(Address, Data)													Write a data byte to the MAX7219
+	Clear()																			Clear dislplay
+	Brightness(Brightness)															Range 0-15
+	Display_Text(Display_Num, Char_1, Char_2, Char_3, Char_4)						Select top or bottom display and display the numbers for digits 1-4
+	Display_Value(Display_Num, Display_Value, Display_DecP, Suffix, decimal_point)	Select top or bottom display and a value with D.p. and suffix character
+	Clock_Display(int row, String value, int colon);								Display a clock with colon
 
 Character font and OP code
 --------------------------
