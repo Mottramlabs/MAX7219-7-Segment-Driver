@@ -1,4 +1,5 @@
-# MAX7219-7-Segment-Driver - Digit 1 is the left most digit, digit 8 is the far right digit
+# MAX7219-7-Segment-Driver
+# Digit 1 is the left most digit, digit 8 is the far right digit
 Arduino Driver Library for a MAX7219 driver chip using 7 segment LED displays
 
       Pin connections
