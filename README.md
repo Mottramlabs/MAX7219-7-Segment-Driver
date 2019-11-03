@@ -13,4 +13,8 @@ Arduino Driver Library for a MAX7219 driver chip using 7 segment LED displays
       
       * The CS connection is user selectable.
       ** From the USB 5V supplied to the Wemos D1 Mini PCB, The MAX7219 needs 5V
+      
+      3rd November 2019
+           Added a simple soak test sketch for the "LED Bar Graph Power Display". This demos the 7 segment display and also the bar segments.
+      
 
