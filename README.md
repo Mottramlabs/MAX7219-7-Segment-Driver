@@ -17,7 +17,9 @@ Arduino Driver Library for a MAX7219 driver chip using 7 segment LED displays
       ** From the USB 5V supplied to the Wemos D1 Mini PCB, The MAX7219 needs 5V
 
 Below are some examples of boards that use this library. 
+
 More details on the bar graph boards https://github.com/Mottramlabs/MAX7219-LED-Bar-Graph-Power-Display
+
 Also please see my web page for details, https://www.mottramlabs.com/display_products.html
 
 ### Simple 8 Digit Display With Rotary Encoder
